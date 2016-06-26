@@ -39,7 +39,7 @@ module Node
 
     def to_infix_notation
       before_eval =
-        "{#{parenthesize_for_infix(@n)}d#{parenthesize_for_infix(@faces)}"
+        "#{parenthesize_for_infix(@n)}d#{parenthesize_for_infix(@faces)}"
       infix =
         if @n.number? && @faces.number?
           before_eval

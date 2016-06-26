@@ -12,7 +12,7 @@ require_relative 'node/all'
 
 class DiceRollParser < Racc::Parser
 
-module_eval(<<'...end dice_roll.y/module_eval...', 'dice_roll.y', 63)
+module_eval(<<'...end dice_roll.y/module_eval...', 'dice_roll.y', 77)
 
   include Node
 
@@ -50,46 +50,56 @@ module_eval(<<'...end dice_roll.y/module_eval...', 'dice_roll.y', 63)
 ##### State transition tables begin ###
 
 racc_action_table = [
-    26,    13,    14,    11,    12,     4,    25,     5,     8,     9,
-     4,    15,     5,     8,     9,     4,    15,     5,     8,     9,
-     4,    15,     5,     8,     9,     4,    15,     5,     8,     9,
-     4,    19,     5,     8,     9,     4,    10,     5,     8,     9,
-     4,   nil,     5,     8,     9,     4,   nil,     5,     8,     9,
-     4,   nil,     5,     8,     9,    13,    14,    11,    12,    15,
-   nil,    28,    13,    14,    13,    14 ]
+    10,     9,    41,    11,    13,    14,    10,     9,    15,    11,
+    13,    14,    18,    19,    16,    17,   -13,    37,    10,     9,
+   -14,    11,    13,    14,    10,     9,   -15,    11,    13,    14,
+    10,     9,   -16,    11,    13,    14,    10,     9,    26,    11,
+    13,    14,    10,     9,    32,    11,    13,    14,    10,     9,
+    26,    11,    13,    14,     9,    39,    11,    13,    14,     9,
+     9,    11,    11,    14,    14,    18,    19,    16,    17,    18,
+    19,    18,    19 ]
 
 racc_action_check = [
-    18,    16,    16,    16,    16,     0,    16,     0,     0,     0,
-     4,    18,     4,     4,     4,     8,     3,     8,     8,     8,
-     9,    24,     9,     9,     9,    11,    17,    11,    11,    11,
-    12,    10,    12,    12,    12,    13,     1,    13,    13,    13,
-    14,   nil,    14,    14,    14,    15,   nil,    15,    15,    15,
-    26,   nil,    26,    26,    26,     2,     2,     2,     2,    27,
-   nil,    27,    20,    20,    21,    21 ]
+    18,    18,    40,    18,    18,    18,    19,    19,     1,    19,
+    19,    19,    20,    20,    20,    20,     4,    20,    39,    39,
+     6,    39,    39,    39,     0,     0,     7,     0,     0,     0,
+    14,    14,     8,    14,    14,    14,     9,     9,    12,     9,
+     9,     9,    16,    16,    15,    16,    16,    16,    17,    17,
+    25,    17,    17,    17,    10,    31,    10,    10,    10,    26,
+    13,    26,    13,    26,    13,     2,     2,     2,     2,    33,
+    33,    34,    34 ]
 
 racc_action_pointer = [
-    -5,    36,    49,     3,     0,   nil,   nil,   nil,     5,    10,
-    31,    15,    20,    25,    30,    35,    -5,    13,    -2,   nil,
-    56,    58,   nil,   nil,     8,   nil,    40,    46,   nil ]
+    15,     8,    59,   nil,     3,   nil,     7,    13,    19,    27,
+    44,   nil,    25,    50,    21,    44,    33,    39,    -9,    -3,
+     6,   nil,   nil,   nil,   nil,    37,    49,   nil,   nil,   nil,
+   nil,    53,   nil,    63,    65,   nil,   nil,   nil,   nil,     9,
+   -13,   nil ]
 
 racc_action_default = [
-    -2,   -15,    -1,    -7,   -15,    -9,   -10,   -11,   -15,   -15,
-   -15,   -15,   -15,   -15,   -15,   -15,   -15,   -13,   -15,    29,
-    -3,    -4,    -5,    -6,   -12,    -8,   -15,   -15,   -14 ]
+    -2,   -26,    -1,    -7,    -8,    -9,   -10,   -11,   -12,   -26,
+   -26,   -22,   -26,   -26,   -26,   -26,   -26,   -26,   -26,   -26,
+   -26,   -13,   -14,   -15,   -16,   -21,   -26,   -17,   -18,   -19,
+   -24,   -26,    42,    -3,    -4,    -5,    -6,   -20,   -23,   -26,
+   -26,   -25 ]
 
 racc_goto_table = [
-    17,    18,     2,     1,   nil,   nil,    16,    24,   nil,   nil,
-   nil,   nil,   nil,    20,    21,    22,    23,   nil,    27 ]
+    31,     2,    30,    23,    25,    24,    21,     1,    29,    27,
+    20,    22,   nil,   nil,    28,    38,   nil,    33,    34,    35,
+    36,    29,    27,   nil,   nil,    40,   nil,    28 ]
 
 racc_goto_check = [
-     3,     3,     2,     1,   nil,   nil,     2,     3,   nil,   nil,
-   nil,   nil,   nil,     2,     2,     2,     2,   nil,     3 ]
+     3,     2,    10,     7,     9,     8,     4,     1,     8,     4,
+     2,     6,   nil,   nil,     6,    10,   nil,     2,     2,     2,
+     2,     8,     4,   nil,   nil,     3,   nil,     6 ]
 
 racc_goto_pointer = [
-   nil,     3,     2,    -8,   nil,   nil ]
+   nil,     7,     1,   -14,    -4,   nil,     1,    -7,    -5,    -6,
+   -11 ]
 
 racc_goto_default = [
-   nil,   nil,   nil,     3,     6,     7 ]
+   nil,   nil,   nil,     3,     4,     5,     6,     7,     8,    12,
+   nil ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
@@ -100,17 +110,28 @@ racc_reduce_table = [
   3, 18, :_reduce_5,
   3, 18, :_reduce_6,
   1, 18, :_reduce_none,
-  3, 19, :_reduce_8,
-  1, 19, :_reduce_9,
   1, 19, :_reduce_none,
   1, 19, :_reduce_none,
-  3, 20, :_reduce_12,
-  2, 20, :_reduce_13,
-  5, 21, :_reduce_14 ]
+  1, 19, :_reduce_none,
+  1, 19, :_reduce_none,
+  1, 19, :_reduce_none,
+  1, 25, :_reduce_none,
+  1, 25, :_reduce_none,
+  1, 25, :_reduce_none,
+  1, 25, :_reduce_none,
+  1, 26, :_reduce_none,
+  1, 26, :_reduce_none,
+  1, 26, :_reduce_none,
+  3, 20, :_reduce_20,
+  2, 21, :_reduce_21,
+  1, 22, :_reduce_22,
+  3, 23, :_reduce_23,
+  2, 23, :_reduce_24,
+  5, 24, :_reduce_25 ]
 
-racc_reduce_n = 15
+racc_reduce_n = 26
 
-racc_shift_n = 29
+racc_shift_n = 42
 
 racc_token_table = {
   false => 0,
@@ -118,7 +139,7 @@ racc_token_table = {
   :RANGE => 2,
   :DICE_ROLL => 3,
   :SHORT_DICE_ROLL => 4,
-  :UMINUS => 5,
+  :UNARY_MINUS => 5,
   "*" => 6,
   "/" => 7,
   "+" => 8,
@@ -156,7 +177,7 @@ Racc_token_to_s_table = [
   "RANGE",
   "DICE_ROLL",
   "SHORT_DICE_ROLL",
-  "UMINUS",
+  "UNARY_MINUS",
   "\"*\"",
   "\"/\"",
   "\"+\"",
@@ -171,8 +192,13 @@ Racc_token_to_s_table = [
   "target",
   "exp",
   "primary",
+  "parenthesis",
+  "unary_minus",
+  "number",
   "dice_roll",
-  "range" ]
+  "range",
+  "primary_without_unary_minus",
+  "primary_without_dice_roll_unary_minus" ]
 
 Racc_debug_parser = false
 
@@ -233,44 +259,72 @@ module_eval(<<'.,.,', 'dice_roll.y', 30)
 
 # reduce 7 omitted
 
-module_eval(<<'.,.,', 'dice_roll.y', 36)
-  def _reduce_8(val, _values, result)
-                 result = ExpNode.new(val[1])
-           
-    result
-  end
-.,.,
+# reduce 8 omitted
 
-module_eval(<<'.,.,', 'dice_roll.y', 39)
-  def _reduce_9(val, _values, result)
-                 result = NumNode.new(val[0])
-           
-    result
-  end
-.,.,
+# reduce 9 omitted
 
 # reduce 10 omitted
 
 # reduce 11 omitted
 
-module_eval(<<'.,.,', 'dice_roll.y', 45)
-  def _reduce_12(val, _values, result)
+# reduce 12 omitted
+
+# reduce 13 omitted
+
+# reduce 14 omitted
+
+# reduce 15 omitted
+
+# reduce 16 omitted
+
+# reduce 17 omitted
+
+# reduce 18 omitted
+
+# reduce 19 omitted
+
+module_eval(<<'.,.,', 'dice_roll.y', 49)
+  def _reduce_20(val, _values, result)
+                     result = ExpNode.new(val[1])
+               
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'dice_roll.y', 52)
+  def _reduce_21(val, _values, result)
+                     result = UnaryMinusNode.new(val[1])
+               
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'dice_roll.y', 55)
+  def _reduce_22(val, _values, result)
+                result = NumNode.new(val[0])
+          
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'dice_roll.y', 59)
+  def _reduce_23(val, _values, result)
                    result = DiceRollNode.new(val[0], val[2])
              
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 48)
-  def _reduce_13(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 62)
+  def _reduce_24(val, _values, result)
                    result = DiceRollNode.new(NumNode.new(1), val[1])
              
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 52)
-  def _reduce_14(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 66)
+  def _reduce_25(val, _values, result)
                result = RangeNode.new(val[1], val[3])
          
     result

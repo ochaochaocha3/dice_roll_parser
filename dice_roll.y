@@ -1,9 +1,9 @@
 class DiceRollParser
 prechigh
   nonassoc RANGE
-  nonassoc DICE_ROLL
-  nonassoc SHORT_DICE_ROLL
-  nonassoc UMINUS
+  left DICE_ROLL
+  left SHORT_DICE_ROLL
+  nonassoc UNARY_MINUS
   left '*' '/'
   left '+' '-'
 preclow
@@ -33,23 +33,37 @@ rule
        }
      | primary
 
-  primary: '(' exp ')' {
-             result = ExpNode.new(val[1])
-           }
-         | NUMBER {
-             result = NumNode.new(val[0])
-           }
+  primary: parenthesis
+         | unary_minus
+         | number
          | dice_roll
          | range
+  primary_without_unary_minus: parenthesis
+                             | number
+                             | dice_roll
+                             | range
+  primary_without_dice_roll_unary_minus: parenthesis
+                                       | number
+                                       | range
 
-  dice_roll: primary SYM_D primary =DICE_ROLL {
+  parenthesis: '(' exp ')' {
+                 result = ExpNode.new(val[1])
+               }
+  unary_minus: '-' primary_without_unary_minus =UNARY_MINUS {
+                 result = UnaryMinusNode.new(val[1])
+               }
+  number: NUMBER {
+            result = NumNode.new(val[0])
+          }
+
+  dice_roll: primary_without_unary_minus SYM_D primary_without_dice_roll_unary_minus =DICE_ROLL {
                result = DiceRollNode.new(val[0], val[2])
              }
-           | SYM_D primary =SHORT_DICE_ROLL {
+           | SYM_D primary_without_dice_roll_unary_minus =SHORT_DICE_ROLL {
                result = DiceRollNode.new(NumNode.new(1), val[1])
              }
 
-  range: '[' primary RANGE primary ']' {
+  range: '[' primary RANGE primary ']' =RANGE {
            result = RangeNode.new(val[1], val[3])
          }
 end

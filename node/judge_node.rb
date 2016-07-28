@@ -2,13 +2,8 @@ require_relative 'binary_op_node'
 
 module Node
   class JudgeNode < BinaryOpNode
-    OP_FOR_JUDGE = {
-      :'<>' => :!=,
-      :'=' => :==
-    }
-
-    def initialize(op, lhs, rhs)
-      super(OP_FOR_JUDGE[op] || op, lhs, rhs, op_for_display: op)
+    def initialize(op, lhs, rhs, op_for_display: op)
+      super(op, lhs, rhs, op_for_display: op_for_display)
     end
 
     def evaluate

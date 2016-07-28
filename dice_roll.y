@@ -29,10 +29,10 @@ rule
            result = JudgeNode.new(:>=, val[0], val[2])
          }
        | exp '=' exp {
-           result = JudgeNode.new(:'=', val[0], val[2])
+           result = JudgeNode.new(:==, val[0], val[2], op_for_display: :'=')
          }
        | exp NEQ exp {
-           result = JudgeNode.new(:'<>', val[0], val[2])
+           result = JudgeNode.new(:!=, val[0], val[2], op_for_display: :'<>')
          }
 
   exp: exp '+' exp {

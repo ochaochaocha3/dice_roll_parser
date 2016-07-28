@@ -296,7 +296,7 @@ module_eval(<<'.,.,', 'dice_roll.y', 28)
 
 module_eval(<<'.,.,', 'dice_roll.y', 31)
   def _reduce_8(val, _values, result)
-               result = JudgeNode.new(:'=', val[0], val[2])
+               result = JudgeNode.new(:==, val[0], val[2], op_for_display: :'=')
          
     result
   end
@@ -304,7 +304,7 @@ module_eval(<<'.,.,', 'dice_roll.y', 31)
 
 module_eval(<<'.,.,', 'dice_roll.y', 34)
   def _reduce_9(val, _values, result)
-               result = JudgeNode.new(:'<>', val[0], val[2])
+               result = JudgeNode.new(:!=, val[0], val[2], op_for_display: :'<>')
          
     result
   end

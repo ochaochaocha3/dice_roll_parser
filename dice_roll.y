@@ -6,7 +6,7 @@ prechigh
   nonassoc UNARY_MINUS
   left '*' '/'
   left '+' '-'
-  nonassoc '<' LEQ '>' GEQ
+  nonassoc '<' LEQ '>' GEQ '=' NEQ
 preclow
 
 rule
@@ -27,6 +27,12 @@ rule
          }
        | exp GEQ exp {
            result = JudgeNode.new(:>=, val[0], val[2])
+         }
+       | exp '=' exp {
+           result = JudgeNode.new(:'=', val[0], val[2])
+         }
+       | exp NEQ exp {
+           result = JudgeNode.new(:'<>', val[0], val[2])
          }
 
   exp: exp '+' exp {
@@ -106,6 +112,8 @@ require_relative 'node/all'
         @q << [:LEQ, nil]
       when s.scan(/>=/)
         @q << [:GEQ, nil]
+      when s.scan(/<>/)
+        @q << [:NEQ, nil]
       when s.scan(/\d+/)
         @q << [:NUMBER, s[0].to_i]
       else

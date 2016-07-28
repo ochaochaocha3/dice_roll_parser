@@ -8,8 +8,9 @@ module Node
     attr_reader :lhs
     attr_reader :rhs
 
-    def initialize(op, lhs, rhs)
+    def initialize(op, lhs, rhs, op_for_display: op)
       @op = op
+      @op_for_display = op_for_display
       @lhs = lhs
       @rhs = rhs
     end
@@ -36,11 +37,11 @@ module Node
     end
 
     def to_infix_notation
-      "#{parenthesize_for_infix(@lhs)} #{@op} #{parenthesize_for_infix(@rhs)}"
+      "#{parenthesize_for_infix(@lhs)} #{@op_for_display} #{parenthesize_for_infix(@rhs)}"
     end
 
     def inspect
-      "#<#{self.class} op=#{@op} lhs=#{@lhs} rhs=#{@rhs}>"
+      "#<#{self.class} op=#{@op.inspect} op_for_display=#{@op_for_display.inspect} lhs=#{@lhs} rhs=#{@rhs}>"
     end
     alias to_s inspect
   end

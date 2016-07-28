@@ -6,17 +6,28 @@ prechigh
   nonassoc UNARY_MINUS
   left '*' '/'
   left '+' '-'
+  nonassoc '<' LEQ '>' GEQ
 preclow
 
 rule
-  target: exp {
-            unless val[0].kind_of?(ExpNode)
-              result = ExpNode.new(val[0])
-            end
-          }
+  target: judge
+        | exp
         | /* none */ {
             result = ExpNode.new(NumNode.new(0))
           }
+
+  judge: exp '<' exp {
+           result = JudgeNode.new(:<, val[0], val[2])
+         }
+       | exp LEQ exp {
+           result = JudgeNode.new(:<=, val[0], val[2])
+         }
+       | exp '>' exp {
+           result = JudgeNode.new(:>, val[0], val[2])
+         }
+       | exp GEQ exp {
+           result = JudgeNode.new(:>=, val[0], val[2])
+         }
 
   exp: exp '+' exp {
          result = BinaryOpNode.new(:+, val[0], val[2])
@@ -91,6 +102,10 @@ require_relative 'node/all'
       case
       when s.scan(/\.\.\.?/)
         @q << [:RANGE, nil]
+      when s.scan(/<=/)
+        @q << [:LEQ, nil]
+      when s.scan(/>=/)
+        @q << [:GEQ, nil]
       when s.scan(/\d+/)
         @q << [:NUMBER, s[0].to_i]
       else

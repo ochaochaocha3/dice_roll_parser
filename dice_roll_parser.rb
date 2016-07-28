@@ -12,7 +12,7 @@ require_relative 'node/all'
 
 class DiceRollParser < Racc::Parser
 
-module_eval(<<'...end dice_roll.y/module_eval...', 'dice_roll.y', 77)
+module_eval(<<'...end dice_roll.y/module_eval...', 'dice_roll.y', 88)
 
   include Node
 
@@ -30,6 +30,10 @@ module_eval(<<'...end dice_roll.y/module_eval...', 'dice_roll.y', 77)
       case
       when s.scan(/\.\.\.?/)
         @q << [:RANGE, nil]
+      when s.scan(/<=/)
+        @q << [:LEQ, nil]
+      when s.scan(/>=/)
+        @q << [:GEQ, nil]
       when s.scan(/\d+/)
         @q << [:NUMBER, s[0].to_i]
       else
@@ -50,88 +54,105 @@ module_eval(<<'...end dice_roll.y/module_eval...', 'dice_roll.y', 77)
 ##### State transition tables begin ###
 
 racc_action_table = [
-    10,     9,    41,    11,    13,    14,    10,     9,    15,    11,
-    13,    14,    18,    19,    16,    17,   -13,    37,    10,     9,
-   -14,    11,    13,    14,    10,     9,   -15,    11,    13,    14,
-    10,     9,   -16,    11,    13,    14,    10,     9,    26,    11,
-    13,    14,    10,     9,    32,    11,    13,    14,    10,     9,
-    26,    11,    13,    14,     9,    39,    11,    13,    14,     9,
-     9,    11,    11,    14,    14,    18,    19,    16,    17,    18,
-    19,    18,    19 ]
+    11,    23,    24,    21,    22,    10,    11,    12,    14,    15,
+    46,    10,    11,    12,    14,    15,    37,    10,    11,    12,
+    14,    15,    48,    10,    11,    12,    14,    15,    16,    10,
+    11,    12,    14,    15,   -18,    10,    11,    12,    14,    15,
+   -19,    10,    11,    12,    14,    15,   -20,    10,    11,    12,
+    14,    15,   -21,    10,    11,    12,    14,    15,    50,    10,
+    11,    12,    14,    15,    31,    10,    11,    12,    14,    15,
+    31,    10,   nil,    12,    14,    15,    23,    24,    21,    22,
+    17,    18,    19,    20,    10,   nil,    12,    10,    15,    12,
+    14,    15,    10,   nil,    12,   nil,    15,    23,    24,    21,
+    22,    23,    24,    21,    22,    23,    24,    21,    22,    23,
+    24,    21,    22,    23,    24,    23,    24 ]
 
 racc_action_check = [
-    18,    18,    40,    18,    18,    18,    19,    19,     1,    19,
-    19,    19,    20,    20,    20,    20,     4,    20,    39,    39,
-     6,    39,    39,    39,     0,     0,     7,     0,     0,     0,
-    14,    14,     8,    14,    14,    14,     9,     9,    12,     9,
-     9,     9,    16,    16,    15,    16,    16,    16,    17,    17,
-    25,    17,    17,    17,    10,    31,    10,    10,    10,    26,
-    13,    26,    13,    26,    13,     2,     2,     2,     2,    33,
-    33,    34,    34 ]
+     0,    25,    25,    25,    25,     0,    10,     0,     0,     0,
+    25,    10,    15,    10,    10,    10,    16,    15,    17,    15,
+    15,    15,    36,    17,    18,    17,    17,    17,     1,    18,
+    19,    18,    18,    18,     5,    19,    20,    19,    19,    19,
+     7,    20,    21,    20,    20,    20,     8,    21,    22,    21,
+    21,    21,     9,    22,    23,    22,    22,    22,    49,    23,
+    24,    23,    23,    23,    13,    24,    48,    24,    24,    24,
+    30,    48,   nil,    48,    48,    48,     3,     3,     3,     3,
+     3,     3,     3,     3,    31,   nil,    31,    11,    31,    11,
+    11,    11,    14,   nil,    14,   nil,    14,    40,    40,    40,
+    40,    38,    38,    38,    38,    39,    39,    39,    39,    41,
+    41,    41,    41,    43,    43,    42,    42 ]
 
 racc_action_pointer = [
-    15,     8,    59,   nil,     3,   nil,     7,    13,    19,    27,
-    44,   nil,    25,    50,    21,    44,    33,    39,    -9,    -3,
-     6,   nil,   nil,   nil,   nil,    37,    49,   nil,   nil,   nil,
-   nil,    53,   nil,    63,    65,   nil,   nil,   nil,   nil,     9,
-   -13,   nil ]
+    -9,    28,   nil,    70,   nil,    17,   nil,    23,    29,    35,
+    -3,    73,   nil,    47,    78,     3,    16,     9,    15,    21,
+    27,    33,    39,    45,    51,    -5,   nil,   nil,   nil,   nil,
+    53,    70,   nil,   nil,   nil,   nil,    20,   nil,    95,    99,
+    91,   103,   109,   107,   nil,   nil,   nil,   nil,    57,    39,
+   nil ]
 
 racc_action_default = [
-    -2,   -26,    -1,    -7,    -8,    -9,   -10,   -11,   -12,   -26,
-   -26,   -22,   -26,   -26,   -26,   -26,   -26,   -26,   -26,   -26,
-   -26,   -13,   -14,   -15,   -16,   -21,   -26,   -17,   -18,   -19,
-   -24,   -26,    42,    -3,    -4,    -5,    -6,   -20,   -23,   -26,
-   -26,   -25 ]
+    -3,   -31,    -1,    -2,   -12,   -13,   -14,   -15,   -16,   -17,
+   -31,   -31,   -27,   -31,   -31,   -31,   -31,   -31,   -31,   -31,
+   -31,   -31,   -31,   -31,   -31,   -31,   -18,   -19,   -20,   -21,
+   -26,   -31,   -22,   -23,   -24,   -29,   -31,    51,    -4,    -5,
+    -6,    -7,    -8,    -9,   -10,   -11,   -25,   -28,   -31,   -31,
+   -30 ]
 
 racc_goto_table = [
-    31,     2,    30,    23,    25,    24,    21,     1,    29,    27,
-    20,    22,   nil,   nil,    28,    38,   nil,    33,    34,    35,
-    36,    29,    27,   nil,   nil,    40,   nil,    28 ]
+    36,     3,    28,     2,    30,     1,    27,    29,   nil,    33,
+    34,    25,    26,    35,   nil,    32,   nil,   nil,    38,    39,
+    40,    41,    42,    43,    44,    45,    33,    34,   nil,   nil,
+    47,   nil,    32,    49 ]
 
 racc_goto_check = [
-     3,     2,    10,     7,     9,     8,     4,     1,     8,     4,
-     2,     6,   nil,   nil,     6,    10,   nil,     2,     2,     2,
-     2,     8,     4,   nil,   nil,     3,   nil,     6 ]
+     4,     3,     8,     2,    10,     1,     7,     9,   nil,     7,
+     9,     3,     5,    11,   nil,     5,   nil,   nil,     3,     3,
+     3,     3,     3,     3,     3,     3,     7,     9,   nil,   nil,
+    11,   nil,     5,     4 ]
 
 racc_goto_pointer = [
-   nil,     7,     1,   -14,    -4,   nil,     1,    -7,    -5,    -6,
-   -11 ]
+   nil,     5,     3,     1,   -15,     1,   nil,    -5,    -9,    -4,
+    -7,    -1 ]
 
 racc_goto_default = [
-   nil,   nil,   nil,     3,     4,     5,     6,     7,     8,    12,
-   nil ]
+   nil,   nil,   nil,   nil,     4,     5,     6,     7,     8,     9,
+    13,   nil ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  1, 17, :_reduce_1,
-  0, 17, :_reduce_2,
-  3, 18, :_reduce_3,
-  3, 18, :_reduce_4,
-  3, 18, :_reduce_5,
-  3, 18, :_reduce_6,
-  1, 18, :_reduce_none,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_none,
-  1, 25, :_reduce_none,
-  1, 25, :_reduce_none,
-  1, 25, :_reduce_none,
-  1, 25, :_reduce_none,
-  1, 26, :_reduce_none,
-  1, 26, :_reduce_none,
-  1, 26, :_reduce_none,
-  3, 20, :_reduce_20,
-  2, 21, :_reduce_21,
-  1, 22, :_reduce_22,
-  3, 23, :_reduce_23,
-  2, 23, :_reduce_24,
-  5, 24, :_reduce_25 ]
+  1, 21, :_reduce_none,
+  1, 21, :_reduce_none,
+  0, 21, :_reduce_3,
+  3, 22, :_reduce_4,
+  3, 22, :_reduce_5,
+  3, 22, :_reduce_6,
+  3, 22, :_reduce_7,
+  3, 23, :_reduce_8,
+  3, 23, :_reduce_9,
+  3, 23, :_reduce_10,
+  3, 23, :_reduce_11,
+  1, 23, :_reduce_none,
+  1, 24, :_reduce_none,
+  1, 24, :_reduce_none,
+  1, 24, :_reduce_none,
+  1, 24, :_reduce_none,
+  1, 24, :_reduce_none,
+  1, 30, :_reduce_none,
+  1, 30, :_reduce_none,
+  1, 30, :_reduce_none,
+  1, 30, :_reduce_none,
+  1, 31, :_reduce_none,
+  1, 31, :_reduce_none,
+  1, 31, :_reduce_none,
+  3, 25, :_reduce_25,
+  2, 26, :_reduce_26,
+  1, 27, :_reduce_27,
+  3, 28, :_reduce_28,
+  2, 28, :_reduce_29,
+  5, 29, :_reduce_30 ]
 
-racc_reduce_n = 26
+racc_reduce_n = 31
 
-racc_shift_n = 42
+racc_shift_n = 51
 
 racc_token_table = {
   false => 0,
@@ -144,14 +165,18 @@ racc_token_table = {
   "/" => 7,
   "+" => 8,
   "-" => 9,
-  "(" => 10,
-  ")" => 11,
-  :NUMBER => 12,
-  :SYM_D => 13,
-  "[" => 14,
-  "]" => 15 }
+  "<" => 10,
+  :LEQ => 11,
+  ">" => 12,
+  :GEQ => 13,
+  "(" => 14,
+  ")" => 15,
+  :NUMBER => 16,
+  :SYM_D => 17,
+  "[" => 18,
+  "]" => 19 }
 
-racc_nt_base = 16
+racc_nt_base = 20
 
 racc_use_result_var = true
 
@@ -182,6 +207,10 @@ Racc_token_to_s_table = [
   "\"/\"",
   "\"+\"",
   "\"-\"",
+  "\"<\"",
+  "LEQ",
+  "\">\"",
+  "GEQ",
   "\"(\"",
   "\")\"",
   "NUMBER",
@@ -190,6 +219,7 @@ Racc_token_to_s_table = [
   "\"]\"",
   "$start",
   "target",
+  "judge",
   "exp",
   "primary",
   "parenthesis",
@@ -206,66 +236,82 @@ Racc_debug_parser = false
 
 # reduce 0 omitted
 
-module_eval(<<'.,.,', 'dice_roll.y', 12)
-  def _reduce_1(val, _values, result)
-                unless val[0].kind_of?(ExpNode)
-              result = ExpNode.new(val[0])
-            end
-          
-    result
-  end
-.,.,
+# reduce 1 omitted
 
-module_eval(<<'.,.,', 'dice_roll.y', 17)
-  def _reduce_2(val, _values, result)
+# reduce 2 omitted
+
+module_eval(<<'.,.,', 'dice_roll.y', 15)
+  def _reduce_3(val, _values, result)
                 result = ExpNode.new(NumNode.new(0))
           
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 21)
-  def _reduce_3(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 19)
+  def _reduce_4(val, _values, result)
+               result = JudgeNode.new(:<, val[0], val[2])
+         
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'dice_roll.y', 22)
+  def _reduce_5(val, _values, result)
+               result = JudgeNode.new(:<=, val[0], val[2])
+         
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'dice_roll.y', 25)
+  def _reduce_6(val, _values, result)
+               result = JudgeNode.new(:>, val[0], val[2])
+         
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'dice_roll.y', 28)
+  def _reduce_7(val, _values, result)
+               result = JudgeNode.new(:>=, val[0], val[2])
+         
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'dice_roll.y', 32)
+  def _reduce_8(val, _values, result)
              result = BinaryOpNode.new(:+, val[0], val[2])
        
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 24)
-  def _reduce_4(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 35)
+  def _reduce_9(val, _values, result)
              result = BinaryOpNode.new(:-, val[0], val[2])
        
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 27)
-  def _reduce_5(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 38)
+  def _reduce_10(val, _values, result)
              result = BinaryOpNode.new(:*, val[0], val[2])
        
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 30)
-  def _reduce_6(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 41)
+  def _reduce_11(val, _values, result)
              # Racc の問題により :/ の後に空白が必要
          result = BinaryOpNode.new(:/ , val[0], val[2])
        
     result
   end
 .,.,
-
-# reduce 7 omitted
-
-# reduce 8 omitted
-
-# reduce 9 omitted
-
-# reduce 10 omitted
-
-# reduce 11 omitted
 
 # reduce 12 omitted
 
@@ -283,48 +329,58 @@ module_eval(<<'.,.,', 'dice_roll.y', 30)
 
 # reduce 19 omitted
 
-module_eval(<<'.,.,', 'dice_roll.y', 49)
-  def _reduce_20(val, _values, result)
+# reduce 20 omitted
+
+# reduce 21 omitted
+
+# reduce 22 omitted
+
+# reduce 23 omitted
+
+# reduce 24 omitted
+
+module_eval(<<'.,.,', 'dice_roll.y', 60)
+  def _reduce_25(val, _values, result)
                      result = ExpNode.new(val[1])
                
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 52)
-  def _reduce_21(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 63)
+  def _reduce_26(val, _values, result)
                      result = UnaryMinusNode.new(val[1])
                
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 55)
-  def _reduce_22(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 66)
+  def _reduce_27(val, _values, result)
                 result = NumNode.new(val[0])
           
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 59)
-  def _reduce_23(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 70)
+  def _reduce_28(val, _values, result)
                    result = DiceRollNode.new(val[0], val[2])
              
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 62)
-  def _reduce_24(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 73)
+  def _reduce_29(val, _values, result)
                    result = DiceRollNode.new(NumNode.new(1), val[1])
              
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'dice_roll.y', 66)
-  def _reduce_25(val, _values, result)
+module_eval(<<'.,.,', 'dice_roll.y', 77)
+  def _reduce_30(val, _values, result)
                result = RangeNode.new(val[1], val[3])
          
     result

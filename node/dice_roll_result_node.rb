@@ -13,9 +13,15 @@ module Node
 
       @n = n
       @evaled_n = n.evaluate
+      if @evaled_n < 1
+        raise ArgumentError, 'number of dice must be equal or larger than 1'
+      end
 
       @faces = faces
       @evaled_faces = faces.evaluate
+      if @evaled_faces < 1
+        raise ArgumentError, 'number of faces must be equal or larger than 1'
+      end
 
       @sum = result.inject(0, &:+)
     end

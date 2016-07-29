@@ -4,25 +4,17 @@ module Node
   class DiceRollResultNode
     include Parenthesizer
 
+    attr_reader :dice_roll
     attr_reader :result
     attr_reader :n
     attr_reader :faces
 
-    def initialize(result, n, faces)
+    def initialize(dice_roll, result)
+      @dice_roll = dice_roll
       @result = result
 
-      @n = n
-      @evaled_n = n.evaluate
-      if @evaled_n < 1
-        raise ArgumentError, 'number of dice must be equal or larger than 1'
-      end
-
-      @faces = faces
-      @evaled_faces = faces.evaluate
-      if @evaled_faces < 1
-        raise ArgumentError, 'number of faces must be equal or larger than 1'
-      end
-
+      @evaled_n = @dice_roll.n.evaluate
+      @evaled_faces = @dice_roll.faces.evaluate
       @sum = result.inject(0, &:+)
     end
 
@@ -43,22 +35,25 @@ module Node
       self
     end
 
+    def to_s_exp
+      result_s_exp = "(list #{result.join(' ')})"
+      "(dice-roll-result #{@dice_roll.to_s_exp} #{result_s_exp})"
+    end
+
     def to_infix_notation
-      before_eval =
-        "#{parenthesize_for_infix(@n)}d#{parenthesize_for_infix(@faces)}"
       infix =
-        if @n.number? && @faces.number?
-          before_eval
+        if @dice_roll.n.number? && @dice_roll.faces.number?
+          @dice_roll.to_infix_notation
         else
-          "#{before_eval} = #{@evaled_n}d#{@evaled_faces}"
+          "#{@dice_roll.to_infix_notation} = #{@evaled_n}d#{@evaled_faces}"
         end
 
        "{#{infix} => #{@result} = #{@sum}}"
     end
 
     def inspect
-      "#<#{self.class} n=#{@n} faces=#{@faces} = " \
-        "#{@evaled_n}d#{@evaled_faces} => #{@result} = #{@sum}"
+      "#<#{self.class} n=#{@dice_roll.n} faces=#{@dice_roll.faces} = " \
+        "#{@evaled_n}d#{@evaled_faces} => #{@result} = #{@sum}>"
     end
     alias to_s inspect
   end

@@ -36,6 +36,10 @@ module Node
       self
     end
 
+    def to_s_exp
+      "(#{@op} #{@lhs.to_s_exp} #{@rhs.to_s_exp})"
+    end
+
     def to_infix_notation
       "#{parenthesize_for_infix(@lhs)} #{@op_for_display} #{parenthesize_for_infix(@rhs)}"
     end

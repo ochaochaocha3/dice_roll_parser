@@ -23,6 +23,10 @@ module Node
       self
     end
 
+    def to_s_exp
+      "(- #{@value.to_s_exp})"
+    end
+
     def to_infix_notation
       "-(#{@value.to_infix_notation})"
     end

@@ -19,6 +19,10 @@ module Node
       self
     end
 
+    def to_s_exp
+      @content.to_s_exp
+    end
+
     def inspect
       "#<#{self.class} #{@content}>"
     end

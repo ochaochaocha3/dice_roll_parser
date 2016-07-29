@@ -8,14 +8,12 @@ module Node
     attr_reader :min
     attr_reader :max
 
-    def initialize(value, min, max)
+    def initialize(range, value)
+      @range = range
       @value = value
 
-      @min = min
-      @evaled_min = min.evaluate
-
-      @max = max
-      @evaled_max = max.evaluate
+      @evaled_min = range.min.evaluate
+      @evaled_max = range.max.evaluate
     end
 
     def number?
@@ -34,20 +32,23 @@ module Node
       self
     end
 
+    def to_s_exp
+      "(range-result #{@range.to_s_exp} #{@value})"
+    end
+
     def to_infix_notation
-      before_eval = "[#{parenthesize_for_infix(@min)}..#{parenthesize_for_infix(@max)}]"
       infix =
-        if @min.number? && @max.number?
-          before_eval
+        if @range.min.number? && @range.max.number?
+          @range.to_infix_notation
         else
-          "#{before_eval} = [#{@evaled_min}..#{@evaled_max}]"
+          "#{@range.to_infix_notation} = [#{@evaled_min}..#{@evaled_max}]"
         end
 
       "{#{infix} => #{@value}}"
     end
 
     def inspect
-      "#<#{self.class} min=#{@min} max=#{@max} " \
+      "#<#{self.class} min=#{@range.min} max=#{@range.max} " \
         "= [#{@evaled_min}..#{@evaled_max}] => #{@value}>"
     end
     alias to_s inspect

@@ -40,6 +40,12 @@ module Node
       self
     end
 
+    def to_s_exp
+      value = @value.to_s_exp
+      "(and (#{less_than_sign(@include_min)} #{@min.to_s_exp} #{value}) " \
+        "(#{less_than_sign(@include_max)} #{value} #{@max.to_s_exp}))"
+    end
+
     def to_infix_notation
       value = parenthesize_for_infix(@value)
       left_paren = @include_min ? '[' : '('

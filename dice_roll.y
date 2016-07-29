@@ -34,6 +34,19 @@ rule
        | exp NEQ exp {
            result = JudgeNode.new(:!=, val[0], val[2], op_for_display: :'<>')
          }
+       | inclusion_judge
+
+  inclusion_judge: exp 'E' inclusion_judge_left_paren primary ',' primary inclusion_judge_right_paren {
+                     include_min = (val[2] == '[')
+                     include_max = (val[6] == ']')
+
+                     result = InclusionJudgeNode.new(val[0], val[3], val[5],
+                                                     include_min: include_min,
+                                                     include_max: include_max)
+                   }
+
+  inclusion_judge_left_paren: '(' | '['
+  inclusion_judge_right_paren: ')' | ']'
 
   exp: exp '+' exp {
          result = BinaryOpNode.new(:+, val[0], val[2])
